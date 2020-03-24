@@ -30,6 +30,7 @@ export default {
         {name: 'Option 4', value: 4},
         {name: 'Option 5', value: 5},
       ],
+      //установим значение по умолчанию
       selected: 'Select'
     }
   },
