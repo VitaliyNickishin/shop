@@ -6,6 +6,7 @@
     v-for="product in products"
     :key="product.article"
     :product_data="product"
+    @sendArticleToParent="reciveArticle"
    />
    
   </div>
@@ -27,7 +28,7 @@ import Card from './Card'
      {
       image: "1.jpg",
       name: "T-shirt 1",
-      price: 2100.234234234,
+      price: 2100,
       article: "T1",
       available: true,
       category: "Мужские"
@@ -35,7 +36,7 @@ import Card from './Card'
      {
       image: "2.jpg",
       name: "T-shirt 2",
-      price: 3500.234234234,
+      price: 3500,
       article: "T2",
       available: true,
       category: "Женские"
@@ -43,7 +44,7 @@ import Card from './Card'
      {
       image: "3.jpg",
       name: "T-shirt 3",
-      price: 2600.234234234,
+      price: 2600,
       article: "T3",
       available: true,
       category: "Мужские"
@@ -51,12 +52,34 @@ import Card from './Card'
      {
       image: "4.jpg",
       name: "T-shirt 4",
-      price: 3500.234234234,
+      price: 3500,
       article: "T4",
       available: true,
       category: "Женские"
      },
+     {
+      image: "5.jpg",
+      name: "T-shirt 5",
+      price: 2750,
+      article: "T5",
+      available: true,
+      category: "Мужские"
+     },
+     {
+      image: "6.jpg",
+      name: "T-shirt 6",
+      price: 3200,
+      article: "T6",
+      available: true,
+      category: "Женские"
+     },
     ]
+   }
+  },
+  methods: {
+   reciveArticle(hello) {
+    console.log(hello);
+    
    }
   }
   
