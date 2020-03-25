@@ -7,9 +7,9 @@
   {{outSelected}}
   </p>
 
+  <!-- выпадающий список  -->
   <div class="options" v-if="areOptionsVisible">
-
-   <!-- при клике будем передавать значение(option) из массива -->
+   <!-- при клике будем передавать значение(option) из массива в элемент списка-->
    <span 
     v-for="option in outOptions"
     :key="option.value"
@@ -17,9 +17,9 @@
     >
     {{option.name}}
    </span>
-  </div>
+  </div><!-- options -->
 
- </div>
+ </div><!-- v-select -->
 </template>
 
 <script>
@@ -57,9 +57,24 @@
     selectOptions(option) {
      // console.log(option);
      this.$emit('select-up', option)
-     // после выбора значения выпадающий список значений закрывается
+     // после передачи значения выпадающий список значений закрывается
      this.areOptionsVisible = false
+    },
+
+    //для закрытия выпадающего списка select
+    hideSelect() {
+      this.areOptionsVisible = false
     }
+  },
+  // реализуем закрытие списка от клика в любом месте
+  // для этого создадим два жизненных цикла
+  // mounted-когдад компонент будет появляться
+  mounted() {
+    document.addEventListener('click', this.hideSelect.bind(this), true)
+  },
+  // когдад компонент будет пропадать
+  beforeDestroy() {
+    document.removeEventListener('click', this.hideSelect)
   }
 
  }
