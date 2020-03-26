@@ -6,7 +6,7 @@
     v-for="product in PRODUCTS"
     :key="product.article"
     :product_data="product"
-    @sendArticleToParent="reciveArticle"
+    @addToCart="addedToCart"
    />
    
   </div>
@@ -22,6 +22,7 @@ import {mapActions, mapGetters} from 'vuex'
   components: {
    Card
   },
+  
   data() {
    return {
     // products: [
@@ -84,12 +85,13 @@ import {mapActions, mapGetters} from 'vuex'
   methods: {
    ...mapActions([
     //для возможности обратиться через this
-    'GET_PRODUCTS_FROM_API'
+    'GET_PRODUCTS_FROM_API',
+    'ADD_TO_CART'
    ]),
 
-   reciveArticle(hello) {
+   addedToCart(hello) {
     console.log(hello);
-    
+    this.ADD_TO_CART(hello)
    }
   },
   mounted() {

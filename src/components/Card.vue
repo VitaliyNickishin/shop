@@ -9,7 +9,7 @@
   <p class="card__price">Price: {{product_data.price}} грн</p>
   <button 
    class="card__btn btn" 
-   @click="sendArticleToParent"
+   @click="addToCart"
   >
    Add to cart
   </button>
@@ -29,8 +29,13 @@
   },
   methods: {
    //передадим родетлю Catalog артикул нажатой карточки
-   sendArticleToParent() {
-    this.$emit('sendArticleToParent', this.product_data.article)
+   // sendArticleToParent() {
+   //  this.$emit('sendArticleToParent', this.product_data.article)
+   // }
+
+   //передадим в корзину товар
+   addToCart() {
+    this.$emit('addToCart', this.product_data);
    }
   }
  }
