@@ -27,6 +27,9 @@
     }
    }
   },
+  mounted() {
+    this.$set(this.product_data, 'quantity', 1)
+  },
   methods: {
    //передадим родетлю Catalog артикул нажатой карточки
    // sendArticleToParent() {

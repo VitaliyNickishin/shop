@@ -29,9 +29,9 @@
     }
    }
   },
-  mounted() {
-    this.$set(this.cart_item_data, 'quantity', 1)
-  },
+  // mounted() {
+  //   this.$set(this.cart_item_data, 'quantity', 1)
+  // },
   methods: {
     deleteFromCart() {
       //передаем что произошел клик по кнопке
