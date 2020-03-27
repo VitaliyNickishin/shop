@@ -34,6 +34,10 @@ const store = () => new Vuex.Store({
   //добавление товара в корзину
   ADD_TO_CART({commit}, prod) {
    commit('SET_CART', prod)
+  },
+  //удаление товара из корзины
+  DELETE_FROM_CART({commit}, index) {
+   commit('REMOVE_FROM_CART', index )
   }
  },
  //выполним мутацию
@@ -42,9 +46,29 @@ const store = () => new Vuex.Store({
    //наполним массив новыми данными
    state.products = products;
   },
-  
+   // изменение количества товара в корзине
   SET_CART(state, prod) {
-   state.cart.push(prod)
+    if (state.cart.length) {
+      let isProductExists = false;
+      state.cart.map(function(item) {
+        if (item.article === prod.article) {
+          isProductExists = true;
+          item.quantity++
+        }
+      })
+      // добавление товара в корзину
+      if (!isProductExists) {
+        state.cart.push(prod)
+      }
+    } else {
+      state.cart.push(prod)
+    }
+   
+  },
+
+  REMOVE_FROM_CART(state, index) {
+    // вырезать из массива индекс в количестве 1
+    state.cart.splice(index, 1)
   }
  },
  getters: {
