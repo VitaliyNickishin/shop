@@ -46,8 +46,8 @@
  .card {
   padding: $padding*2;
   margin-bottom: $margin*2;
-  flex-basis: 25%;
   box-shadow: 0 0 8px 0 #e0e0e0;
+  flex-basis: 25%;
   &__img {
    width: 100px;
   }
