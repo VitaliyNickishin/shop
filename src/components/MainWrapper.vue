@@ -1,35 +1,38 @@
 <template>
  <div class="main-wrapper">
-  <Catalog />
+   <keep-alive>
+     <router-view></router-view>
+   </keep-alive>
+  <!-- <Catalog />
   <Cart 
    v-if="CART.length"
    :cart_data="CART"
-   />
+   /> -->
  </div>
 </template>
 
 <script>
-import Catalog from './Catalog'
-import Cart from './Cart'
-import {mapGetters} from 'vuex'
+// import Catalog from './Catalog'
+// import Cart from './Cart'
+// import {mapGetters} from 'vuex'
 
  export default {
   name: 'main-wrapper',
   components: {
-   Catalog,
-   Cart
+  //  Catalog,
+  //  Cart
   },
   
   data() {
    return {
-    title: 'hello main-wrapper'
+    
    }
   },
-  computed: {
-   ...mapGetters([
-    'CART'
-   ])
-  }
+  // computed: {
+  //  ...mapGetters([
+  //   'CART'
+  //  ])
+  // }
  }
 </script>
 

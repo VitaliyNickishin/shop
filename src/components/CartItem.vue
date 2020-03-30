@@ -12,13 +12,29 @@
   </div>
   <div class="cart-item__quantity">
     <p>Qty:</p>
-    {{cart_item_data.quantity}}
+
+    <span 
+      @click="decrementItem"
+      class="quantity-btn"
+    >
+    -
+    </span>
+
+    <span>{{cart_item_data.quantity}}</span>
+
+    <span 
+      @click="incrementItem"
+      class="quantity-btn"
+    >
+    +
+    </span>
   </div>
   <button @click="deleteFromCart">Delete</button>
  </div>
 </template>
 
 <script>
+
  export default {
   name: 'CartItem',
   props: {
@@ -29,13 +45,19 @@
     }
    }
   },
-  mounted() {
-    this.$set(this.cart_item_data, 'quantity', 1)
-  },
+  // mounted() {
+  //   this.$set(this.cart_item_data, 'quantity', 1)
+  // },
   methods: {
     deleteFromCart() {
       //передаем что произошел клик по кнопке
       this.$emit('deleteFromCart')
+    },
+    incrementItem() {
+      this.$emit('increment')
+    },
+    decrementItem() {
+      this.$emit('decrement')
     }
   }
  }
@@ -53,6 +75,8 @@
   &__image {
     width: 100px;
   }
-
+  .quantity-btn {
+    cursor: pointer;
+  }
 }
 </style>
