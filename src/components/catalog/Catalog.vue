@@ -17,7 +17,7 @@
 </template>
 
 <script>
-import Card from './Card'
+import Card from '../catalog/Card'
 import {mapActions, mapGetters} from 'vuex'
 
  export default {
@@ -99,6 +99,7 @@ import {mapActions, mapGetters} from 'vuex'
    }
   },
   mounted() {
+   // this.$store.dispatch('GET_PRODUCTS_FROM_API')
    this.GET_PRODUCTS_FROM_API()
    //*
    .then((response) => {
