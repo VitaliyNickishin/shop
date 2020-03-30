@@ -38,6 +38,14 @@ const store = () => new Vuex.Store({
   //удаление товара из корзины
   DELETE_FROM_CART({commit}, index) {
    commit('REMOVE_FROM_CART', index )
+  },
+  //добавление количества товара в корзине
+  INCREMENT_CART_ITEM({commit}, index) {
+   commit('INCREMENT', index )
+  },
+  //уменьшение количества товара в корзине
+  DECREMENT_CART_ITEM({commit}, index) {
+   commit('DECREMENT', index)
   }
  },
  //выполним мутацию
@@ -63,12 +71,21 @@ const store = () => new Vuex.Store({
     } else {
       state.cart.push(prod)
     }
-   
   },
-
+  // удаление товара из корзины
   REMOVE_FROM_CART(state, index) {
     // вырезать из массива индекс в количестве 1
     state.cart.splice(index, 1)
+  },
+  // увелечние количества товара
+  INCREMENT(state, index) {
+    state.cart[index].quantity ++
+  },
+  // уменьшение количества товара
+  DECREMENT(state, index) {
+    if(state.cart[index].quantity > 1) {
+      state.cart[index].quantity --
+    }
   }
  },
  getters: {
