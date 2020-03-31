@@ -4,6 +4,34 @@
    <div class="catalog__link_to_cart">Cart: {{CART.length}}</div>
   </router-link>
   <h1>Catalog</h1>
+  <div class="filters">
+   <v-select />
+  
+   <div class="range-slider">
+    <input 
+     type="range" 
+     min="0" 
+     max="10000"
+     step="10"
+     v-model.number="minPrice"
+     @change="setRangeSlider"
+    >
+    <input 
+     type="range" 
+     min="0" 
+     max="10000"
+     step="10"
+     v-model.number="maxPrice"
+     @change="setRangeSlider"
+    >
+   </div> <!-- .range-slider -->
+
+   <div class="range-values">
+    <p>Min: {{minPrice}}</p>
+    <p>Max: {{maxPrice}}</p>
+   </div><!-- /.range-values -->
+    
+  </div> <!-- .filters -->
   <div class="catalog__list">
    <Card 
     v-for="product in PRODUCTS"
@@ -19,65 +47,20 @@
 <script>
 import Card from '../catalog/Card'
 import {mapActions, mapGetters} from 'vuex'
+import vSelect from '../v-select'
 
  export default {
   name: 'Catalog',
   components: {
-   Card
+   Card,
+   vSelect
   },
   
   data() {
    return {
-    // products: [
-    //  {
-    //   image: "1.jpg",
-    //   name: "T-shirt 1",
-    //   price: 2100,
-    //   article: "T1",
-    //   available: true,
-    //   category: "Мужские"
-    //  },
-    //  {
-    //   image: "2.jpg",
-    //   name: "T-shirt 2",
-    //   price: 3500,
-    //   article: "T2",
-    //   available: true,
-    //   category: "Женские"
-    //  },
-    //  {
-    //   image: "3.jpg",
-    //   name: "T-shirt 3",
-    //   price: 2600,
-    //   article: "T3",
-    //   available: true,
-    //   category: "Мужские"
-    //  },
-    //  {
-    //   image: "4.jpg",
-    //   name: "T-shirt 4",
-    //   price: 3500,
-    //   article: "T4",
-    //   available: true,
-    //   category: "Женские"
-    //  },
-    //  {
-    //   image: "5.jpg",
-    //   name: "T-shirt 5",
-    //   price: 2750,
-    //   article: "T5",
-    //   available: true,
-    //   category: "Мужские"
-    //  },
-    //  {
-    //   image: "6.jpg",
-    //   name: "T-shirt 6",
-    //   price: 3200,
-    //   article: "T6",
-    //   available: true,
-    //   category: "Женские"
-    //  },
-    // ]
+    sortedProducts: [],
+    minPrice: 0,
+    maxPrice: 10000
    }
   },
   computed: {
@@ -86,6 +69,7 @@ import {mapActions, mapGetters} from 'vuex'
     'CART'
    ])
   },
+
   methods: {
    ...mapActions([
     //для возможности обратиться через this
@@ -96,8 +80,29 @@ import {mapActions, mapGetters} from 'vuex'
    addedToCart(hello) {
     console.log(hello);
     this.ADD_TO_CART(hello)
+   },
+   // ползунки меняются местам если пересекаются
+   setRangeSlider() {
+    if (this.minPrice > this.maxPrice) {
+     let tmp = this.maxPrice;
+     this.maxPrice = this.minPrice;
+     this.minPrice = tmp;
+    }
+    //сортировка при перемещении ползунка
+    this.sortByCategories()
+   },
+   //сортировка по цене
+   sortByCategories() {
+    let vm = this;
+    //clone PRODUCTS from getters to sortedProducts
+    this.sortedProducts = [...this.PRODUCTS]
+    this.sortedProducts = this.sortedProducts.filter(item => {
+     return item.price >= vm.minPrice && item.price <= vm.maxPrice
+    })
    }
+
   },
+  
   mounted() {
    // this.$store.dispatch('GET_PRODUCTS_FROM_API')
    this.GET_PRODUCTS_FROM_API()
@@ -105,6 +110,7 @@ import {mapActions, mapGetters} from 'vuex'
    .then((response) => {
     if (response.data) {
      console.log('Data arrived!');
+     this.sortByCategories()
     }
    })
   }
@@ -127,4 +133,26 @@ import {mapActions, mapGetters} from 'vuex'
    border: 1px solid #aeaeae;
   }
  }
+ .filters {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+ .range-slider {
+    width: 200px;
+    margin: auto 16px;
+    text-align: center;
+    position: relative;
+  }
+  .range-slider svg, .range-slider input[type=range] {
+    position: absolute;
+    left: 0;
+    bottom: 0;
+  }
+  input[type=range]::-webkit-slider-thumb {
+    z-index: 2;
+    position: relative;
+    top: 2px;
+    margin-top: -7px;
+  }
 </style>
