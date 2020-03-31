@@ -1,6 +1,12 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
-import axios from 'axios'
+
+import commonActions from './actions/actions'
+import apiRequests from './actions/api-requests'
+import mutations from './mutations/mutations'
+import getters from './getters/getters'
+
+const actions = {...commonActions, ...apiRequests}
 
 Vue.use(Vuex)
 
@@ -10,92 +16,10 @@ const store = () => new Vuex.Store({
   cart: []
  },
  
- actions: {
-  GET_PRODUCTS_FROM_API({commit}) {
-   //запрос данных
-   return axios('http://localhost:3000/products', {
-    method: "GET"
-   })
-   //полученные данные
-   .then((products) => {
-    //вызываем мутацию,чтоб изменить пустой массив 
-    //products в state из выполненного запроса,
-    //которые пойдут дополнительным аргументом payload(нагрузкой) 
-    commit('SET_PRODUCTS_TO_STATE', products.data);
-    //вернем если нужны будут какие то действия*
-    return products;
-   })
-   //в случае ошибки запроса
-   .catch(error => {
-				console.log(error);
-				return error;
-			})
-  },
-  //добавление товара в корзину
-  ADD_TO_CART({commit}, prod) {
-   commit('SET_CART', prod)
-  },
-  //удаление товара из корзины
-  DELETE_FROM_CART({commit}, index) {
-   commit('REMOVE_FROM_CART', index )
-  },
-  //добавление количества товара в корзине
-  INCREMENT_CART_ITEM({commit}, index) {
-   commit('INCREMENT', index )
-  },
-  //уменьшение количества товара в корзине
-  DECREMENT_CART_ITEM({commit}, index) {
-   commit('DECREMENT', index)
-  }
- },
- //выполним мутацию
- mutations: {
-  SET_PRODUCTS_TO_STATE (state, products) {
-   //наполним массив новыми данными
-   state.products = products;
-  },
-   // изменение количества товара в корзине
-  SET_CART(state, prod) {
-    if (state.cart.length) {
-      let isProductExists = false;
-      state.cart.map(function(item) {
-        if (item.article === prod.article) {
-          isProductExists = true;
-          item.quantity++
-        }
-      })
-      // добавление товара в корзину
-      if (!isProductExists) {
-        state.cart.push(prod)
-      }
-    } else {
-      state.cart.push(prod)
-    }
-  },
-  // удаление товара из корзины
-  REMOVE_FROM_CART(state, index) {
-    // вырезать из массива индекс в количестве 1
-    state.cart.splice(index, 1)
-  },
-  // увелечние количества товара
-  INCREMENT(state, index) {
-    state.cart[index].quantity ++
-  },
-  // уменьшение количества товара
-  DECREMENT(state, index) {
-    if(state.cart[index].quantity > 1) {
-      state.cart[index].quantity --
-    }
-  }
- },
- getters: {
-  PRODUCTS(state) {
-   return state.products;
-  },
-  CART(state) {
-   return state.cart;
-  }
- }
+ actions,
+ mutations,
+ getters
+
 })
 
 export default store
