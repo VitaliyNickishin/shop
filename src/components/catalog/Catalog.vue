@@ -5,7 +5,13 @@
   </router-link>
   <h1>Catalog</h1>
   <div class="filters">
-   <v-select />
+    <!-- примим $emit(event: 'select-up', option)
+     прописав в методе sortByCategories-->
+   <v-select 
+    :outSelected="selected"
+    :outCategories="categories"
+    @select-up="sortByCategories"
+   />
   
    <div class="range-slider">
     <input 
@@ -34,7 +40,7 @@
   </div> <!-- .filters -->
   <div class="catalog__list">
    <Card 
-    v-for="product in PRODUCTS"
+    v-for="product in filteredProducts"
     :key="product.article"
     :product_data="product"
     @addToCart="addedToCart"
@@ -58,6 +64,14 @@ import vSelect from '../v-select'
   
   data() {
    return {
+    categories: [
+      {name: 'Все', value: 'все'},
+      {name: 'Мужские', value: 'м'},
+      {name: 'Женские', value: 'ж'}
+    ],
+    //default value in the field
+    selected: 'Все',
+    //для отображения выбранной категории
     sortedProducts: [],
     minPrice: 0,
     maxPrice: 10000
@@ -67,7 +81,14 @@ import vSelect from '../v-select'
    ...mapGetters([
     'PRODUCTS',
     'CART'
-   ])
+   ]),
+   filteredProducts() {
+     if (this.sortedProducts.length) {
+       return this.sortedProducts
+     } else {
+       return this.PRODUCTS
+     }
+   }
   },
 
   methods: {
@@ -76,6 +97,10 @@ import vSelect from '../v-select'
     'GET_PRODUCTS_FROM_API',
     'ADD_TO_CART'
    ]),
+   // сортировка товара через select
+  //  optionSelect(option) {
+  //     this.selected = option.name
+  //   },
 
    addedToCart(hello) {
     console.log(hello);
@@ -91,14 +116,21 @@ import vSelect from '../v-select'
     //сортировка при перемещении ползунка
     this.sortByCategories()
    },
-   //сортировка по цене
-   sortByCategories() {
-    let vm = this;
-    //clone PRODUCTS from getters to sortedProducts
-    this.sortedProducts = [...this.PRODUCTS]
-    this.sortedProducts = this.sortedProducts.filter(item => {
-     return item.price >= vm.minPrice && item.price <= vm.maxPrice
-    })
+   //сортировка по категории
+   sortByCategories(categor) {
+     this.sortedProducts = [];
+     this.PRODUCTS.map((item) => {
+       if (item.category === categor.name) {
+         this.sortedProducts.push(item);
+       }
+     })
+     this.selected = categor.name
+    // let vm = this;
+    // //clone PRODUCTS from getters to sortedProducts
+    // this.sortedProducts = [...this.PRODUCTS]
+    // this.sortedProducts = this.sortedProducts.filter(item => {
+    //  return item.price >= vm.minPrice && item.price <= vm.maxPrice
+    // })
    }
 
   },
@@ -110,7 +142,7 @@ import vSelect from '../v-select'
    .then((response) => {
     if (response.data) {
      console.log('Data arrived!');
-     this.sortByCategories()
+    //  this.sortByCategories()
     }
    })
   }

@@ -11,7 +11,7 @@
   <div class="options" v-if="areOptionsVisible">
    <!-- при клике будем передавать значение(option) из массива в элемент списка-->
    <span 
-    v-for="option in outOptions"
+    v-for="option in outCategories"
     :key="option.value"
     @click="selectOptions(option)"
     >
@@ -27,7 +27,7 @@
   name: 'v-select',
   //принимаем пропсы от родителя
   props: {
-   outOptions: {
+   outCategories: {
     type: Array,
     default() {
      return []
@@ -46,19 +46,19 @@
   },
 
   methods: {
-   showOptions() {
-    this.areOptionsVisible = !this.areOptionsVisible
-   },
+    showOptions() {
+      this.areOptionsVisible = !this.areOptionsVisible
+    },
    // будем принимать значение
    // т.к. никто не работает со значением option внутри компонента select
    // момент выбирания опций придется отлавливать в родиетеле,
    // необходимо его будет поднять в родитель через emit
    // через метод select-up передадим значение option
     selectOptions(option) {
-     // console.log(option);
-     this.$emit('select-up', option)
-     // после передачи значения выпадающий список значений закрывается
-     this.areOptionsVisible = false
+      // console.log(option);
+      this.$emit('select-up', option)
+      // после передачи значения выпадающий список значений закрывается
+      this.areOptionsVisible = false
     },
 
     //для закрытия выпадающего списка select
@@ -98,7 +98,7 @@
 .options {
  border: 1px solid #ccc;
  position: absolute;
- top: 20px;
+ top: 36px;
  right: 0;
  width: 100%;
 }
