@@ -82,6 +82,7 @@ import vSelect from '../v-select'
     'PRODUCTS',
     'CART'
    ]),
+  //  сортировка по категориям
    filteredProducts() {
      if (this.sortedProducts.length) {
        return this.sortedProducts
@@ -97,11 +98,7 @@ import vSelect from '../v-select'
     'GET_PRODUCTS_FROM_API',
     'ADD_TO_CART'
    ]),
-   // сортировка товара через select
-  //  optionSelect(option) {
-  //     this.selected = option.name
-  //   },
-
+   
    addedToCart(hello) {
     console.log(hello);
     this.ADD_TO_CART(hello)
@@ -116,21 +113,22 @@ import vSelect from '../v-select'
     //сортировка при перемещении ползунка
     this.sortByCategories()
    },
-   //сортировка по категории
-   sortByCategories(categor) {
-     this.sortedProducts = [];
-     this.PRODUCTS.map((item) => {
-       if (item.category === categor.name) {
-         this.sortedProducts.push(item);
-       }
-     })
-     this.selected = categor.name
-    // let vm = this;
-    // //clone PRODUCTS from getters to sortedProducts
-    // this.sortedProducts = [...this.PRODUCTS]
-    // this.sortedProducts = this.sortedProducts.filter(item => {
-    //  return item.price >= vm.minPrice && item.price <= vm.maxPrice
-    // })
+
+   //сортировка по цене
+   sortByCategories(catego) {
+    this.sortedProducts = [];
+    //clone PRODUCTS from getters to sortedProducts
+    this.sortedProducts = [...this.PRODUCTS]
+    this.sortedProducts = this.sortedProducts.filter(item => {
+     return item.price >= this.minPrice && item.price <= this.maxPrice
+    })
+    if (catego) {
+      this.sortedProducts = this.sortedProducts.filter(e => {
+        //для отображения выбранной категории в поле select
+        this.selected = catego.name;
+        return e.category === catego.name
+      })
+    }
    }
 
   },
@@ -142,10 +140,11 @@ import vSelect from '../v-select'
    .then((response) => {
     if (response.data) {
      console.log('Data arrived!');
-    //  this.sortByCategories()
+     this.sortByCategories()
     }
    })
   }
+  
  }
 </script>
 
