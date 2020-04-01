@@ -6,7 +6,7 @@
    class="card__img"
    />
   <p class="card__name">{{product_data.name}}</p>
-  <p class="card__price">Price: {{product_data.price}} грн</p>
+  <p class="card__price">Price: {{product_data.price | toFix | formattedPrice}}</p>
   <button 
    class="card__btn btn" 
    @click="addToCart"
@@ -17,8 +17,17 @@
 </template>
 
 <script>
+import toFix from '../../filters/toFix'
+import formattedPrice from '../../filters/price-format'
+
  export default {
   name: 'Card',
+
+  filters: {
+    toFix,
+    formattedPrice
+  },
+
   props: {
    product_data: {
     type: Object,
@@ -27,9 +36,11 @@
     }
    }
   },
+
   mounted() {
     this.$set(this.product_data, 'quantity', 1)
   },
+
   methods: {
    //передадим родетлю Catalog артикул нажатой карточки
    // sendArticleToParent() {

@@ -55,6 +55,7 @@ import Card from '../catalog/Card'
 import {mapActions, mapGetters} from 'vuex'
 import vSelect from '../v-select'
 
+
  export default {
   name: 'Catalog',
   components: {
@@ -77,6 +78,7 @@ import vSelect from '../v-select'
     maxPrice: 10000
    }
   },
+  
   computed: {
    ...mapGetters([
     'PRODUCTS',
