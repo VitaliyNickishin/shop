@@ -1,4 +1,8 @@
 export default {
+ SET_SEARCH_VALUE_TO_VUEX (state, value) {
+   //заполнение строковой переменной новыми значениями
+  state.searchValue = value;
+ },
  SET_PRODUCTS_TO_STATE (state, products) {
   //наполним массив новыми данными
   state.products = products;
