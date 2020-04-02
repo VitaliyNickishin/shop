@@ -62,7 +62,7 @@ import vSelect from '../v-select'
    Card,
    vSelect
   },
-  
+
   data() {
    return {
     categories: [
@@ -82,7 +82,8 @@ import vSelect from '../v-select'
   computed: {
    ...mapGetters([
     'PRODUCTS',
-    'CART'
+    'CART',
+    'SEARCH_VALUE'
    ]),
   //  сортировка по категориям
    filteredProducts() {
@@ -118,7 +119,6 @@ import vSelect from '../v-select'
 
    //сортировка по цене
    sortByCategories(catego) {
-    this.sortedProducts = [];
     //clone PRODUCTS from getters to sortedProducts
     this.sortedProducts = [...this.PRODUCTS]
     this.sortedProducts = this.sortedProducts.filter(item => {
@@ -131,19 +131,37 @@ import vSelect from '../v-select'
         return e.category === catego.name
       })
     }
+   },
+    //фильтрация товара по поиску
+   sortProductsBySearchValue(value) {
+     //clone PRODUCTS from getters to sortedProducts
+    this.sortedProducts = [...this.PRODUCTS]
+     if (value) {
+       this.sortedProducts = this.sortedProducts.filter(item => {
+       return item.name.toLowerCase().includes(value.toLowerCase())
+     })
+    } else {
+      this.sortedProducts = this.PRODUCTS;
+    }
    }
 
   },
-  
+  watch: {
+    SEARCH_VALUE() {
+      this.sortProductsBySearchValue(this.SEARCH_VALUE)
+    }
+  },
+
   mounted() {
    // this.$store.dispatch('GET_PRODUCTS_FROM_API')
    this.GET_PRODUCTS_FROM_API()
    //*
-   .then((response) => {
-    if (response.data) {
-     console.log('Data arrived!');
-     this.sortByCategories()
-    }
+    .then((response) => {
+      if (response.data) {
+      console.log('Data arrived!');
+      this.sortByCategories()
+      this.sortProductsBySearchValue(this.SEARCH_VALUE)
+      }
    })
   }
   
@@ -160,7 +178,7 @@ import vSelect from '../v-select'
   }
   &__link_to_cart {
    position: absolute;
-   top: 10px;
+   top: 80px;
    right: 10px;
    padding: $padding*2;
    border: 1px solid #aeaeae;

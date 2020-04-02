@@ -3,19 +3,20 @@ import Router from 'vue-router'
 
 import Catalog from '../components/catalog/Catalog'
 import Cart from '../components/cart/Cart'
+import Home from '../views/Home'
 
 Vue.use(Router);
 
 let router = new Router({
   routes: [
-    // {
-    //   path: '/',
-    //   name: 'mainPage',
-    //   component: vMainPage
-    // },
     {
       path: '/',
-      name: 'catalog',
+      name: 'Home',
+      component: Home
+    },
+    {
+      path: '/catalog',
+      name: 'Catalog',
       component: Catalog
     },
     // {
