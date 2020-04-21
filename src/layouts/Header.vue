@@ -6,12 +6,12 @@
   <div class="search">
    <input 
    type="text"
-   v-model="searchValue"
+   v-model="searchVal"
    >
    <button class="search__btn">
     <i 
      class="material-icons"
-     @click="search(searchValue)"
+     @click="search(searchVal)"
     >
     search
     </i>
@@ -39,7 +39,7 @@ import {mapActions, mapGetters} from 'vuex'
   props: {},
   data() {
    return {
-    searchValue: ''
+    searchVal: ''
    }
   },
   computed: {
@@ -62,7 +62,7 @@ import {mapActions, mapGetters} from 'vuex'
    },
    //очистка поля
    clearSearchField() {
-    this.searchValue = ''
+    this.searchVal = ''
     this.GET_SEARCH_VALUE_TO_VUEX();
     if (this.$router.path !== '/catalog') {
      this.$router.push('/catalog')
